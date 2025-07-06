@@ -122,6 +122,11 @@ archive/
     └── test_annotations_with_pose_information.json
 ```
 
+**Link del dataset completo**
+https://drive.google.com/drive/folders/1jzsKvhByIuPlkn8udVCh8RbjQsjMI-80?usp=sharing
+
+no se puedo subir el dataset completo al repo por el tamaño
+
 ### Metadatos clave
 
 - Número de imágenes:
