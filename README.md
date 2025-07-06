@@ -143,7 +143,15 @@ no se puedo subir el dataset completo al repo por el tamaño
 
 ## Conclusiones
 
-*Este apartado será completado al finalizar el proyecto.*
+- El proyecto implementa un sistema robusto de detección de personas en escenarios de desastre, utilizando la arquitectura YOLOv9e y un dataset especializado. La estructura del código y la documentación reflejan buenas prácticas en la organización de datos, configuración del entorno y pipeline de entrenamiento, lo que facilita la reproducibilidad y escalabilidad del sistema.
+
+- El dataset está correctamente adaptado para la tarea, con una única clase (human) y anotaciones en formato YOLO, lo que simplifica el problema y mejora la velocidad de inferencia. La estructura de carpetas y la documentación detallada aseguran la integridad y facilidad de uso del conjunto de datos, aunque se identifica que la detección en escenarios acuáticos sigue siendo un reto.
+
+- El modelo alcanza métricas sólidas: precisión del 87.7%, recall del 75.7% y mAP@0.5 superior al umbral mínimo propuesto (0.60), lo que valida su aplicabilidad en contextos reales de rescate. Sin embargo, el recall indica que aún existe margen de mejora para reducir los falsos negativos, especialmente en condiciones visuales adversas.
+
+- El sistema es apto para ser integrado en plataformas de rescate (como drones), gracias a su velocidad de inferencia y precisión. No obstante, el análisis cualitativo muestra que el rendimiento varía según el tipo de desastre, siendo menor en inundaciones por los reflejos y distorsiones del agua. Se recomienda profundizar en técnicas de augmentación específicas para estos escenarios.
+
+- La documentación del proyecto y el informe son claros, detallados y alineados, lo que facilita la comprensión y futura extensión del trabajo. La transparencia en la publicación de resultados y métricas, así como la referencia a fuentes y datasets, refuerza la confiabilidad y utilidad del sistema para la comunidad académica y profesional.
 
 ## Licencia
 
