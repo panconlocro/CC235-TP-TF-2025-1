@@ -1,0 +1,8 @@
+
+path: C:\Users\rosar\RufoEsEterno\ProcesamientoImagenes\TF-TP\CC235-TP-TF-2025-1\data\Dataset
+train: train/images
+val: val/images
+test: test/images
+
+nc: 1
+names: ['human']
