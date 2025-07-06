@@ -13,133 +13,95 @@ El objetivo del presente proyecto es diseñar un sistema de detección automáti
 
 ## Descripción del dataset
 
-**Nombre del conjunto de datos**: *C2A Dataset: Human Detection in Disaster Scenarios*\
-**Autor**: Ragib Nihal\
-**Fuente**: Publicado en Kaggle en marzo de 2024.
+**Nombre del conjunto de datos**: *Dataset de Detección Humana en Escenarios de Desastre*\
+**Fuente**: Dataset personalizado para entrenamiento de modelos YOLO.
 
-Este conjunto de datos fue creado con el propósito de entrenar modelos de visión por computador para la detección de personas en escenarios de desastre mediante imágenes aéreas capturadas por UAVs (drones).
+Este conjunto de datos fue diseñado específicamente para entrenar modelos de detección de objetos capaces de identificar personas en situaciones de emergencia y desastre mediante imágenes aéreas capturadas por UAVs (drones).
 
 ### Características principales
 
-- Cantidad de objetos anotados: más de 360,000
-- Tipo de imágenes: Escenarios reales y simulados de desastres:
-  - Incendios y humo
-  - Inundaciones
-  - Edificios colapsados y escombros
-  - Accidentes de tráfico
-- Resolución: Variable, desde 123×152 hasta 5184×3456 píxeles
-- Clases: Solo personas (class\_id = 0), clasificadas según postura
+- **Objetivo**: Detección de personas (`human`) en escenarios de desastre
+- **Tipo de imágenes**: Cuatro categorías principales de desastres:
+  - **Inundaciones** (`flood_image`) - Personas en zonas inundadas
+  - **Incendios** (`fire_image`) - Personas en zonas de incendio y humo
+  - **Edificios colapsados** (`collapsed_building_image`) - Personas en escombros y estructuras dañadas
+  - **Incidentes de tráfico** (`traffic_incident_image`) - Personas en accidentes vehiculares
+- **Formato de anotación**: YOLO estándar (sin información de pose)
+- **Resolución**: Variable según la fuente de la imagen
+- **Clases**: Una sola clase - `human` (class_id = 0)
 
-### Clasificación por postura (pose\_id)
+### Formato de anotación YOLO
 
-| Pose ID | Postura  | Descripción |
-| ------- | -------- | ----------- |
-| 0       | Bent     | Inclinado   |
-| 1       | Kneeling | Arrodillado |
-| 2       | Lying    | Acostado    |
-| 3       | Sitting  | Sentado     |
-| 4       | Upright  | De pie      |
-
-### Formatos de anotación
-
-**YOLO (You Only Look Once)**
-
-Formato por línea:
+Las anotaciones siguen el formato YOLO estándar:
 
 ```
-<clase> <x_centro> <y_centro> <ancho> <alto> <pose>
+<clase> <x_centro> <y_centro> <ancho> <alto>
 ```
 
-- Coordenadas normalizadas respecto al tamaño de la imagen
-- Clase es siempre 0 (persona)
-- El valor "pose" va de 0 a 4
+- **Coordenadas normalizadas**: Valores entre 0 y 1 respecto al tamaño de la imagen
+- **Clase**: Siempre 0 (human)
+- **Bounding boxes**: Definen la ubicación y tamaño de cada persona detectada
 
-**Ejemplo:**
+**Ejemplo de anotación:**
 
 ```
-0 0.051601 0.861111 0.096085 0.069444 4
+0 0.597857 0.402284 0.004286 0.007614
+0 0.763571 0.892132 0.035714 0.048223
+0 0.630000 0.881980 0.028571 0.032995
 ```
 
-Esto representa una persona de pie (pose\_id = 4) en una imagen de 281×288 píxeles.
-
-**COCO (Common Objects in Context)**
-
-Formato JSON estructurado:
-
-```json
-{
-  "images": [
-    {
-      "id": 1,
-      "width": 264,
-      "height": 247,
-      "file_name": "flood_image0363_4.png",
-      "license": 1,
-      "date_captured": "2023-07-31"
-    }
-  ],
-  "annotations": [
-    {
-      "id": 1,
-      "image_id": 1,
-      "category_id": 0,
-      "bbox": [247, 32, 8, 8],
-      "pose": 0
-    }
-  ],
-  "categories": [
-    {
-      "id": 0,
-      "name": "0",
-      "supercategory": "char"
-    }
-  ]
-}
-```
+Cada línea representa una persona detectada en la imagen con sus coordenadas de bounding box normalizadas.
 
 ### Estructura del dataset
 
 ```
-archive/
-└── C2A_Dataset/
-    └── new_dataset3/
-        ├── train/
-        │   ├── images/               # 6,129 imágenes
-        │   ├── labels/               # 6,129 archivos .txt (YOLO)
-        │   └── train_annotations.json
-        ├── val/
-        │   ├── images/               # 2,043 imágenes
-        │   ├── labels/               # 2,043 archivos .txt
-        │   └── val_annotations.json
-        ├── test/
-        │   ├── images/               # 2,043 imágenes
-        │   ├── labels/               # 2,043 archivos .txt
-        │   └── test_annotations.json
-        └── All labels with Pose information/
-└── Coco_annotation_pose/
-    ├── train_annotations_with_pose_information.json
-    ├── val_annotations_with_pose_information.json
-    └── test_annotations_with_pose_information.json
+data/
+├── analisis_pose_completo.xlsx
+└── Dataset/
+    ├── Imagenes_prueba/          # Imágenes para testing adicional
+    │   ├── testeo1.jpg
+    │   ├── testeo2.jpg
+    │   ├── testeo3.jpg
+    │   ├── testeo4.webp
+    │   ├── testeo5.png
+    │   ├── testeo6.jpg
+    │   ├── testeo7.jpg
+    │   ├── testeo8.jpg
+    │   ├── waldo1.jpg
+    │   ├── waldo2.jpg
+    │   └── waldo5.png
+    ├── train/
+    │   ├── images/               # Imágenes de entrenamiento (6,129 imágenes)
+    │   │   ├── flood_image*.png
+    │   │   ├── fire_image*.png
+    │   │   ├── collapsed_building_image*.png
+    │   │   └── traffic_incident_image*.png
+    │   ├── labels/               # Anotaciones YOLO (.txt)
+    │   ├── labels.cache
+    │   └── train_annotations.json
+    ├── val/
+    │   ├── images/               # Imágenes de validación
+    │   ├── labels/               # Anotaciones YOLO (.txt)
+    │   ├── labels.cache
+    │   └── val_annotations.json
+    └── test/
+        ├── images/               # Imágenes de prueba
+        ├── labels/               # Anotaciones YOLO (.txt)
+        ├── labels.cache
+        └── test_annotations.json
 ```
 
-**Link del dataset completo**
-https://drive.google.com/drive/folders/1jzsKvhByIuPlkn8udVCh8RbjQsjMI-80?usp=sharing
+### Estadísticas del dataset
 
-no se puedo subir el dataset completo al repo por el tamaño
-
-### Metadatos clave
-
-- Número de imágenes:
-  - Entrenamiento: 6,129
-  - Validación: 2,043
-  - Test: 2,043
-- Clases: Persona (class\_id = 0)
-- Posturas: 5 clases (pose\_id de 0 a 4)
-- Formatos:
-  - YOLO básico (.txt)
-  - YOLO + Pose
-  - COCO (.json)
-  - COCO con pose explícita
+- **Total de imágenes de entrenamiento**: 6,129
+- **Distribución por categoría de desastre**:
+  - Imágenes de inundaciones
+  - Imágenes de incendios
+  - Imágenes de edificios colapsados
+  - Imágenes de incidentes de tráfico
+- **Clase única**: `human` (ID: 0)
+- **Formato de archivo**: PNG para imágenes, TXT para etiquetas YOLO
+- **Anotaciones adicionales**: Archivos JSON con metadatos complementarios
 
 ## Conclusiones
 
